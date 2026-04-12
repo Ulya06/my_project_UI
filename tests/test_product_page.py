@@ -1,25 +1,27 @@
-from pages.product_page import ProductPage
+import pytest
 
 
-def test_add_to_cart_button_text(driver):
-    page = ProductPage(driver)
-    page.open_page()
-    assert 'Add to cart' in page.get_add_button_text()
+def test_breadcrumb_multimedia(product_page):
+    assert 'Multimedia' in product_page.get_breadcrumb()
 
+def test_quantity_adjustment_and_cart_sync(product_page):
+    product_page.click_plus_multi(10)
+    product_page.add_to_cart()
+    product_page.view_cart()
 
-def test_breadcrumb_multimedia(driver):
-    page = ProductPage(driver)
-    page.open_page()
-    assert 'Multimedia' in page.get_breadcrumb()
+    initial_qty = int(product_page.get_cart_input_value())
+    product_page.decrease_quantity_in_cart()
 
+    new_qty = int(product_page.get_cart_input_value())
+    counter = int(product_page.wait_and_get_counter(new_qty))
 
-def test_quantity_input_default_value(driver):
-    page = ProductPage(driver)
-    page.open_page()
-    assert page.get_quantity() == 1
+    assert new_qty == initial_qty - 1
+    assert counter == new_qty
 
-
-def test_product_image_visible(driver):
-    page = ProductPage(driver)
-    page.open_page()
-    assert page.is_image_visible()
+def test_change_currency_and_remove_from_cart(product_page):
+    product_page.change_currency_to_eur()
+    product_page.click_plus_multi(2)
+    product_page.add_to_cart()
+    product_page.go_to_cart_via_header()
+    product_page.remove_item_from_cart()
+    product_page.should_be_empty_cart()

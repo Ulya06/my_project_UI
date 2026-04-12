@@ -2,9 +2,13 @@ from selenium.webdriver.common.by import By
 
 
 class CategoryLocators:
-    PRODUCTS = (By.CSS_SELECTOR, 'td.oe_product')
-    FIRST_PRODUCT = (By.CSS_SELECTOR, 'td.oe_product h6 a')
-    BREADCRUMB = (By.CSS_SELECTOR, 'ol.breadcrumb')
-    PRICE = (By.CSS_SELECTOR, 'span.h6.mb-0')
-    DROPDOWN = (By.CSS_SELECTOR, '.o_pricelist_dropdown .dropdown-toggle')
-    EUR_OPTION = (By.XPATH, "//span[text()='EUR']/ancestor::a")
+    PRICE = (By.CLASS_NAME, 'oe_currency_value')
+    PRODUCT_NAME = (By.CLASS_NAME, 'o_wsale_products_item_title')
+    PRICELIST_BTN = (By.CSS_SELECTOR, '.o_pricelist_dropdown .dropdown-toggle')
+    EUR_PRICELIST = (By.XPATH, "//a[.//span[contains(text(), 'EUR')]]")
+    LIST_VIEW_BTN = (By.CSS_SELECTOR, ".o_wsale_apply_list")
+    STEEL_CHECKBOX = (By.CSS_SELECTOR, "input[value='1-1']")
+    ADD_TO_CART_ICON = (By.CSS_SELECTOR, ".o_wsale_product_btn .a-submit")
+    PROCEED_CHECKOUT_BTN = (By.CSS_SELECTOR, ".o_sale_product_configurator_edit")
+    CART_PRODUCT_TITLE = (By.CSS_SELECTOR, ".o_cart_product h6")
+    CART_PRODUCT_DESCRIPTION = (By.CSS_SELECTOR, ".o_cart_product .text-muted")

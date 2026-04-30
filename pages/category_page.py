@@ -5,32 +5,22 @@ from pages.locators.category_locators import CategoryLocators
 
 
 class CategoryPage(BasePage):
-
     def open_page(self):
         self.open(self.base_url + 'shop/category/desks-1')
 
-    def change_currency_to_eur(self):
-        self.click(CategoryLocators.PRICELIST_BTN)
-        element = self.wait.until(EC.element_to_be_clickable(CategoryLocators.EUR_PRICELIST))
-        self.driver.execute_script("arguments[0].click();", element)
-
-    def should_all_prices_be_in_eur(self):
-        self.wait.until(EC.presence_of_all_elements_located(CategoryLocators.PRICE))
-        assert '€' in self.driver.page_source
-
-    def get_first_product_name(self):
-        return self.get_text(CategoryLocators.PRODUCT_NAME)
+    def verify_product_name_in_source(self, name):
+        self.wait.until(EC.visibility_of_element_located(CategoryLocators.PRODUCT_NAME))
+        assert name in self.driver.page_source
 
     def open_first_product(self):
         self.click(CategoryLocators.PRODUCT_NAME)
 
     def switch_to_list_view(self):
-        btn = self.wait.until(EC.element_to_be_clickable(CategoryLocators.LIST_VIEW_BTN))
-        btn.click()
+        self.click(CategoryLocators.LIST_VIEW_BTN)
         self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, ".o_wsale_layout_list")))
 
     def select_steel_filter(self):
-        checkbox = self.wait.until(EC.presence_of_element_located(CategoryLocators.STEEL_CHECKBOX))
+        checkbox = self.find(CategoryLocators.STEEL_CHECKBOX)
         self.driver.execute_script("arguments[0].click();", checkbox)
         self.wait.until(EC.url_contains("attrib=1-1"))
 
@@ -44,13 +34,18 @@ class CategoryPage(BasePage):
 
     def should_be_on_cart_page(self):
         self.wait.until(EC.url_contains("/shop/cart"))
-        assert "/shop/cart" in self.driver.current_url
 
     def verify_product_in_cart(self, full_name, description):
-        title = self.wait.until(EC.visibility_of_element_located(CategoryLocators.CART_PRODUCT_TITLE)).text
-        desc = self.driver.find_element(*CategoryLocators.CART_PRODUCT_DESCRIPTION).text
+        title = self.get_text(CategoryLocators.CART_PRODUCT_TITLE)
+        desc = self.get_text(CategoryLocators.CART_PRODUCT_DESCRIPTION)
         assert full_name in title
         assert description in desc
 
-    def get_price_text(self):
-        return self.get_text(CategoryLocators.PRICE)
+    def change_currency_to_eur(self):
+        self.click(CategoryLocators.PRICELIST_BTN)
+        element = self.wait.until(EC.element_to_be_clickable(CategoryLocators.EUR_PRICELIST))
+        self.driver.execute_script("arguments[0].click();", element)
+
+    def should_all_prices_be_in_eur(self):
+        self.wait.until(lambda d: "€" in d.page_source)
+        assert "€" in self.driver.page_source

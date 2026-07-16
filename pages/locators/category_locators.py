@@ -12,3 +12,6 @@ class CategoryLocators:
     PROCEED_CHECKOUT_BTN = (By.CSS_SELECTOR, ".o_sale_product_configurator_edit")
     CART_PRODUCT_TITLE = (By.CSS_SELECTOR, ".o_cart_product h6")
     CART_PRODUCT_DESCRIPTION = (By.CSS_SELECTOR, ".o_cart_product .text-muted")
+    LIST_VIEW_BTN = (By.CSS_SELECTOR, ".o_wsale_view_list")
+    LIST_VIEW_CONTAINER = (By.CSS_SELECTOR, ".o_wsale_layout_list")
+

@@ -5,17 +5,25 @@ from pages.category_page import CategoryPage
 from pages.product_page import ProductPage
 from selenium.webdriver.chrome.options import Options
 import allure
+from allure_commons.types import AttachmentType
 
 
 @pytest.fixture()
 def driver():
     options = Options()
-    options.add_argument('--headless')
-    options.add_argument("window-size = 1920, 1080")
+    options.add_argument("--headless")
+    options.add_argument("--window-size=1920,1080")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     chrome_driver = webdriver.Chrome(options=options)
     yield chrome_driver
-    allure.attach(chrome_driver.get_screenshot_as_png(), name = "screenshot", attachment_type=AttachmentType.PNG)
+    allure.attach(
+        chrome_driver.get_screenshot_as_png(),
+        name="screenshot",
+        attachment_type=AttachmentType.PNG
+    )
     chrome_driver.quit()
+
 
 @pytest.fixture()
 def cart_page(driver):

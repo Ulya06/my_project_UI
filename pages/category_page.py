@@ -24,7 +24,7 @@ class CategoryPage(BasePage):
         ).click()
 
         self.wait.until(
-            EC.visibility_of_element_located(
+            EC.presence_of_element_located(
                 CategoryLocators.LIST_VIEW_CONTAINER
             )
         )

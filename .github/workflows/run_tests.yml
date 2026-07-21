@@ -14,14 +14,8 @@ on:
           - extended
           - all
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 
 jobs:
-
   run-tests:
     name: Run autotests
     runs-on: ubuntu-latest
@@ -99,35 +93,3 @@ jobs:
           name: allure-report
           path: allure-report
           retention-days: 1
-
-
-
-  publish-report:
-    name: Publish Allure report
-    needs: run-tests
-    runs-on: ubuntu-latest
-
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-
-    steps:
-
-      - name: Download report
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report
-          path: allure-report
-
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: allure-report
-
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
